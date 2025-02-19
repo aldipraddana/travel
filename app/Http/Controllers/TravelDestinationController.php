@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\TravelDestinationRequest;
 use App\Repositories\TravelDestinationRepository;
+use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class TravelDestinationController extends Controller
@@ -41,6 +42,16 @@ class TravelDestinationController extends Controller
     {
         try {
             $travelDestination = $this->travelDestinationRepository->update($id, $request->validated());
+            return redirect()->route('setting.travel');
+        } catch (\Exception $e) {
+            return response()->json(['message' => $e->getMessage()], 500);
+        }
+    }
+
+    public function delete(Request $request) {
+        try {
+            $id = $request->id;
+            $this->travelDestinationRepository->delete($id);
             return redirect()->route('setting.travel');
         } catch (\Exception $e) {
             return response()->json(['message' => $e->getMessage()], 500);

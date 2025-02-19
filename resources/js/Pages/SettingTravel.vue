@@ -1,9 +1,30 @@
 <script setup>
+import { useForm } from '@inertiajs/vue3';
 import { route } from '../../../vendor/tightenco/ziggy/src/js';
 
 defineProps({
     travelDestinations: Object,
 });
+
+const form = useForm({
+    id: '',
+});
+
+const submitDelete = (travelId) => {
+    const condition = confirm('Apakah anda yakin ingin menghapus data ini?');
+    if (condition) {
+        form.id = travelId;
+        form.post(route("travel.delete"), {
+            onSuccess: () => {
+                alert('Berhasil menghapus data')
+            },
+            onError: () => {
+                alert('Terjadi kesalahan')
+                console.log('error');
+            },
+        });
+    }
+};
 </script>
 <template>
     <Head title="Setting Travel" description="Travel App" />
@@ -25,7 +46,7 @@ defineProps({
                         <th class="border px-4 py-2">Waktu Keberangkatan</th>
                         <th class="border px-4 py-2">Kuota</th>
                         <th class="border px-4 py-2">Harga Tiket</th>
-                        <th class="border px-4 py-2">Aksi</th>
+                        <th class="border px-4 py-2 text-center">Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -35,8 +56,10 @@ defineProps({
                         <td class="border px-4 py-2">{{ travel.departure_time }}</td>
                         <td class="border px-4 py-2">{{ travel.quota }}</td>
                         <td class="border px-4 py-2">{{ travel.ticket_price }}</td>
-                        <td>
-                            <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Delete</button>
+                        <td class="text-center">
+                            <form @submit.prevent="submitDelete(travel.id)">
+                                <button type="submit" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Delete</button>
+                            </form>
                         </td>
                     </tr>
                 </tbody>

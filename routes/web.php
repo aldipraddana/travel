@@ -19,5 +19,6 @@ Route::middleware('auth')->group(function () {
     Route::inertia('/create-travel', 'CreateTravel')->name('create.travel');
     Route::post('/setting-travel', [TravelDestinationController::class, 'store'])->name('travel.store');
     Route::put('/setting-travel/{id}', [TravelDestinationController::class, 'update']);
+    Route::post('/setting-travel/delete', [TravelDestinationController::class, 'delete'])->name('travel.delete');
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 });
